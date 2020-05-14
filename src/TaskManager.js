@@ -79,7 +79,7 @@ function TaskItemInfo(props){
     if (completed==1)
         check=true;
     else check=false;
-    let scaduto=false;
+    let scaduto=null;
     if (deadline!=null){
         deadline=deadline.format("YYYY-MM-DD HH:mm");
         if (moment(deadline).isBefore(moment()))

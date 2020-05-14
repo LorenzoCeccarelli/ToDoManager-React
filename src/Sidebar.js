@@ -15,14 +15,14 @@ function Sidebar(props) {
 class FilterList extends React.Component{
     constructor(props){
         super(props);
-        this.state=props.filterList;
+        this.state={filterList: props.filterList};
     }
     render(){
         return <>
                 <FilterTitle />
                 <nav className="nav nav-pills flex-column">
                     {
-                    this.state.map((e,index) => <FilterItem key={index}
+                    this.state.filterList.map((e,index) => <FilterItem key={index}
                                                         filterItem={e}
                                                      />)
                     }
@@ -41,14 +41,14 @@ function FilterItem(props){
 class ProjectList extends React.Component{
     constructor(props){
         super(props);
-        this.state=props.projectList;
+        this.state={projectList : props.projectList};
     }
     render(){
         return <>
                 <ProjectTitle />
                 <nav className="nav nav-pills flex-column">
                     {
-                        this.state.map((e,index)=> <ProjectItem key={index}
+                        this.state.projectList.map((e,index)=> <ProjectItem key={index}
                                                         projectItem={e}/> )
                     }
                 </nav>

@@ -1,7 +1,7 @@
 import React from "react";
 
 function OptionalModal(props){
-    return <div className="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    return <div className="modal fade" id="staticBackdrop" data-backdrop="static" tabIndex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
                 <div className="modal-dialog modal-lg" role="document">
                     <div className="modal-content">
                         <OptionalModalHeader />
@@ -14,8 +14,8 @@ function OptionalModal(props){
 function OptionalModalHeader(){
     return <div className="modal-header">
                 <h5 className="modal-title" id="staticBackdropLabel">New Task Manager</h5>
-                    <button type="button" className="close" data-dismiss="modal" ariaLabel="Close">
-                        <span ariaHidden="true">&times;</span>
+                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
             </div>
 }
@@ -31,7 +31,7 @@ function OptionalModalFooter(){
             </div>
 }
 function OptionalTaskForm(){
-    return  <form id="formNewTask" autocomplete="off" name="new">
+    return  <form id="formNewTask" autoComplete="off" name="new">
                 <OptionalTaskFormDescription />
                 <OptionalTaskFormPriority />
                 <OptionalTaskFormVisibility />
@@ -40,7 +40,7 @@ function OptionalTaskForm(){
             </form>;
 }
 function OptionalTaskFormDescription(){
-    return <div class="form-group row">
+    return <div className="form-group row">
             <label htmlFor="inputDescription" className="col-sm-2 col-form-label">Description:</label>
                 <div className="col-sm-10">
                     <input type="Text" className="form-control" id="inputDescription" required={true} placeholder="This field is mandatory" />
