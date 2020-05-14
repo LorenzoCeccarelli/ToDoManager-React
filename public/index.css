@@ -1,0 +1,99 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+/* Global */
+.vheight-100 {
+    min-height: 100vh;
+}
+
+.below-nav {
+    padding-top: 5rem;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
+.navbar{
+      background-color: rgb(48, 179, 189);
+    }
+
+.btn-outline-success{
+    background-color: rgb(10,108,146); /* colore di sfondo    */
+  border: 2px solid rgb(10, 108, 146); /* bordo dell'elemento */
+  color: #fff;               /* colore del testo    */
+  font-weight: bold;         /* testo in grassetto  */
+}
+.btn-outline-success:hover{
+    background-color: rgb(48, 179, 189);
+    border-color: rgb(10, 108, 146);
+}
+#navbar-example3{
+    background-color: rgb(176, 231, 228);
+}
+.nav-link-group {
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
+    text-transform: uppercase;
+  }
+
+  #navbar-example3{
+      min-height: 100vh;
+  }
+  .nav-link-item{
+    color: rgb(48, 179, 189);
+    font-weight: bold;
+    font-size: medium;
+}
+.taskRow{
+    background-color: rgb(203, 255, 255);
+    border-width: thin;
+   
+    
+}
+.headTable{
+    background-color: rgb(48, 179, 189);
+}
+/* Checkbox for important tasks */
+.custom-checkbox .custom-control-input.important~.custom-control-label::before{
+    border-color: red;
+}
+
+.custom-checkbox .custom-control-input.important:checked~.custom-control-label::before{
+    background-color: red;
+  }
+
+.custom-checkbox .custom-control-input.important:focus~.custom-control-label::before{
+    box-shadow:  0 0 0 0.2rem rgb(255, 148, 148);
+}
+
+/* Add task button */
+.fixed-right-bottom {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: 1030;
+    margin: 0 1.5rem 1.5rem 0;
+    border-radius: 50%;
+}
+.scaduto {
+    background-color: red;
+    border-radius: 10px 10px 10px 10px;
+}
+#inputDescription:invalid{
+    border: 2px dashed red;
+}
+#inputDescription:valid{
+    border-color: green;
+}
+
+.nav-link-item:hover{
+    background-color: rgb(182, 250, 255);
+    color: rgb(48, 179, 189);
+}
+#left-sidebar .nav-link-item.active{
+    color:white;
+    background-color: rgb(41, 112, 145);
+}
+#left-sidebar .nav-link-group{
+    color:  rgb(41, 112, 145);
+}
