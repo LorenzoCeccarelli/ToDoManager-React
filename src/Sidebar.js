@@ -4,7 +4,7 @@ function Sidebar(props) {
         return <aside className="collapse d-sm-block col-sm-4 col-12 bg-light below-nav" id="left-sidebar">
                     <nav id="navbar-example3" className="navbar navbar-light navbar-full">
                         <nav className="nav nav-pills flex-column">
-                            <FilterList filterList={props.filterList} />
+                            <FilterList filterTasks={props.filterTasks} filter={props.filter}/>
                             <ProjectList projectList={props.projectList} />
                         </nav>
                     </nav>
@@ -12,50 +12,34 @@ function Sidebar(props) {
     
 }
 
-class FilterList extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={filterList: props.filterList};
-    }
-    render(){
-        return <>
-                <FilterTitle />
-                <nav className="nav nav-pills flex-column">
-                    {
-                    this.state.filterList.map((e,index) => <FilterItem key={index}
-                                                        filterItem={e}
-                                                     />)
-                    }
-                
-                </nav>
+function FilterList(props){
+    return <>
+            <a className="nav-link nav-link-group">Filters</a>
+            <nav className="nav nav-pills flex-column">
+                <a className={`nav-link ml-3 my-1 nav-link-item ${props.filter==="All"? "active": ""}`} href="#" onClick={()=>{props.filterTasks("All")}}>All</a>
+                <a className={`nav-link ml-3 my-1 nav-link-item ${props.filter==="Important"? "active": ""}`} href="#" onClick={()=>{props.filterTasks("Important")}}>Important</a>
+                <a className={`nav-link ml-3 my-1 nav-link-item ${props.filter==="Today"? "active": ""}`} href="#" onClick={()=>{props.filterTasks("Today")}}>Today</a>
+                <a className={`nav-link ml-3 my-1 nav-link-item ${props.filter==="Next7days"? "active": ""}`} href="#" onClick={()=>{props.filterTasks("Next7days")}}>Next 7 Days</a>
+                <a className={`nav-link ml-3 my-1 nav-link-item ${props.filter==="Private"? "active": ""}`} href="#" onClick={()=>{props.filterTasks("Private")}}>Private</a>
+                <a className={`nav-link ml-3 my-1 nav-link-item ${props.filter==="SharedWith..."? "active": ""}`} href="#" onClick={()=>{props.filterTasks("SharedWith...")}}>Shared with...</a>
+            </nav>
              </>
-    }
+    
 }
 
-function FilterTitle(){
-    return <a className="nav-link nav-link-group">Filters</a>;
-}
-function FilterItem(props){
-    return <a id={`filter${props.filterItem}`} className="nav-link ml-3 my-1 nav-link-item" href="#">{props.filterItem}</a>
-}
-class ProjectList extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={projectList : props.projectList};
-    }
-    render(){
-        return <>
+function ProjectList(props){
+    return <>
                 <ProjectTitle />
                 <nav className="nav nav-pills flex-column">
                     {
-                        this.state.projectList.map((e,index)=> <ProjectItem key={index}
+                        props.projectList.map((e,index)=> <ProjectItem key={index}
                                                         projectItem={e}/> )
                     }
                 </nav>
                </>
 
                 
-    }
+    
 }
 function ProjectTitle(){
     return <a className="nav-link nav-link-group" >Projects</a>

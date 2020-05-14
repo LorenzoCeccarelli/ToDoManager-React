@@ -1,4 +1,4 @@
-
+import * as moment from "moment"
 /**
  * Information about Task
  */
@@ -20,7 +20,7 @@ class Task{
         this.visibility=visibility;
         this.project=project; 
         this.deadline=deadline;
-        this.completed=completed;
+        this.completed=completed; 
     }
 
     /**
@@ -31,7 +31,7 @@ class Task{
   static from(json) {
     return Object.assign(new Task(), json);
   }
-    
+  
 }
 
 export default Task;

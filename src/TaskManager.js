@@ -20,26 +20,15 @@ function TaskManager(props){
             </>
 }
 class TaskTable extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={tasks: [...props.tasks],
-                    filter : props.filter};
-    }
+    
     render(){
+        console.log(this.props);
         return <>
-        <p className="badge ">{this.state.filter} tasks</p>
         <table className='table ' style={{marginBottom: 0}}>
         <thead className="headTable">
-        <tr>
-            <th className='col-4'>Description</th>
-            <th className='col-2'>ProjectName</th>
-            <th className='col-2'>Visibility</th>
-            <th className='col-2'>Deadline</th>
-            <th className='col-2'>Actions</th>
-        </tr>
         </thead>
         <tbody>{
-            this.state.tasks.map((e) => <TaskItem key={e.id}
+            this.props.tasks.map((e) => <TaskItem key={e.id}
                                                   task={e}
                                                  />)
         }
@@ -49,16 +38,11 @@ class TaskTable extends React.Component{
     }
 }
 class TaskItem extends React.Component{
-    constructor(props){
-        super(props);
-        this.state={scaduto : null};
-    }
-
-    setScaduto=()=>{this.setState({scaduto : "scaduto"})};
+    
 
     render(){
         return <tr className="taskRow" id={`task${this.props.task.id}`}>
-                <TaskItemInfo task={this.props.task} setScaduto={this.setScaduto} scaduto={this.state.scaduto} /><TaskItemControl/>
+                <TaskItemInfo task={this.props.task} /><TaskItemControl/>
                </tr>
     }
     
