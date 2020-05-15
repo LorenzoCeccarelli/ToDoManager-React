@@ -1,35 +1,43 @@
 import React from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
-function OptionalModal(props){
-    return <div className="modal fade" id="staticBackdrop" data-backdrop="static" tabIndex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true" >
-                <div className="modal-dialog modal-lg" role="document">
-                    <div className="modal-content">
-                        <OptionalModalHeader />
-                        <OptionalModalBody />
-                        <OptionalModalFooter />
-                    </div>
-                </div>
-            </div>
+
+function OptionalModal(props) {
+    const [show, setShow] = React.useState(false);
+  
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+  
+    return (
+      <>
+        <NewTaskButton showModal={handleShow} />
+        <Modal show={show} onHide={handleClose} size="lg">
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+              <OptionalTaskForm />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
+
+function NewTaskButton(props){
+    return <button id="newTaskButton" type="button" className="btn btn-lg btn-success fixed-right-bottom" onClick={props.showModal}>&#43;</button>;
 }
-function OptionalModalHeader(){
-    return <div className="modal-header">
-                <h5 className="modal-title" id="staticBackdropLabel">New Task Manager</h5>
-                    <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-            </div>
-}
-function OptionalModalBody(){
-    return <div className="modal-body" id="modalBody">
-                <OptionalTaskForm />
-            </div>
-}
-function OptionalModalFooter(){
-    return  <div className="modal-footer" id="modalFooter">
-                <button type="button" className="btn btn-secondary" id="cancelButton" data-dismiss="modal">Close</button>
-                <button type="submit" className="btn btn-primary" id="buttonNewTask" >Add task!</button>
-            </div>
-}
+
+
+
 function OptionalTaskForm(){
     return  <form id="formNewTask" autoComplete="off" name="new">
                 <OptionalTaskFormDescription />

@@ -11,12 +11,23 @@ class App extends React.Component {
   }
   componentDidMount() {
     // fake loading the tasks from the API server
-    //API.getAllTasks().then((t) => this.setState({tasks: t}));
     API.getProjectNames().then((pn) => this.setState({ projectList : pn}));
   }
+
   filterTasks= (filtro)=>{
-    API.getFilterTasks(filtro).then((ts)=> this.setState({tasks: ts, filter: filtro}))
-    //API.getAllTasks().then((ts)=> this.setState({tasks: ts, filter: filterList[0]}));
+    API.getFilterTasks(filtro).then((ts)=> this.setState({tasks: ts, filter: filtro}));
+  }
+  
+  projectTasks= (project)=>{
+    API.getProjectTasks(project).then((ts)=>this.setState({tasks: ts, filter: project}));
+  }
+
+  requireEditTask= (task) =>{
+    this.setState({mode : 'edit', editedTask: task});
+  }
+
+  deleteTask=(task)=> {
+    API.deleteTask(task).then((ts)=> this.setState({tasks: ts}));
   }
 
   render() {
@@ -24,7 +35,8 @@ class App extends React.Component {
     console.log(this.state.projectList);
       return <div className="App">
           <Navbar/>
-          <MainContent tasks={this.state.tasks} filter={this.state.filter} projectList={this.state.projectList} filterTasks={this.filterTasks} />
+          <MainContent tasks={this.state.tasks} filter={this.state.filter} projectList={this.state.projectList} filterTasks={this.filterTasks}
+           projectTasks={this.projectTasks} deleteTask={this.deleteTask}/>
           <OptionalModal mode={this.state.mode} />
       </div>
 

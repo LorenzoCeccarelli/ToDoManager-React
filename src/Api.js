@@ -1,7 +1,7 @@
 import * as moment from "moment"
 import Task from "./task.js";
 
-const fakeTasks=[
+ let fakeTasks=[
     new Task(0,"Fare la spesa", 1, 0, "Rifornimento", moment("2020-12-05 22:45"),0),
     new Task(1,"Pulire la casa", 0, 1, "Casa", moment("2020-05-08 21:09"),1),
     new Task(2,"Studiare aw1",1,1,"Università",null,0),
@@ -38,5 +38,13 @@ async function getProjectNames(){
       return fakeProjects; 
 }
 
-const API= {getFilterTasks, getProjectNames};
+async function getProjectTasks(project){
+    return fakeTasks.filter((task)=>task.project==project);
+}
+
+async function deleteTask(task){
+    fakeTasks=fakeTasks.filter((t)=>t.id!=task.id);
+    return fakeTasks;
+}
+const API= {getFilterTasks, getProjectNames, getProjectTasks, deleteTask};
 export default API;

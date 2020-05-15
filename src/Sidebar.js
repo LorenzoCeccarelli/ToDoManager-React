@@ -5,7 +5,7 @@ function Sidebar(props) {
                     <nav id="navbar-example3" className="navbar navbar-light navbar-full">
                         <nav className="nav nav-pills flex-column">
                             <FilterList filterTasks={props.filterTasks} filter={props.filter}/>
-                            <ProjectList projectList={props.projectList} />
+                            <ProjectList projectList={props.projectList} filter={props.filter} projectTasks={props.projectTasks}/>
                         </nav>
                     </nav>
                 </aside>
@@ -26,14 +26,13 @@ function FilterList(props){
              </>
     
 }
-
+   
 function ProjectList(props){
     return <>
                 <ProjectTitle />
                 <nav className="nav nav-pills flex-column">
                     {
-                        props.projectList.map((e,index)=> <ProjectItem key={index}
-                                                        projectItem={e}/> )
+                        props.projectList.map((e,index)=> <ProjectItem key={index} projectItem={e} projectTasks={props.projectTasks} filter={props.filter}/> )
                     }
                 </nav>
                </>
@@ -45,6 +44,6 @@ function ProjectTitle(){
     return <a className="nav-link nav-link-group" >Projects</a>
 }
 function ProjectItem(props){
-    return <a id={`project${props.projectItem}`} className="nav-link ml-3 my-1 nav-link-item" href="#">{props.projectItem}</a>
+    return <a name={props.projectItem} className={`nav-link ml-3 my-1 nav-link-item ${props.filter===props.projectItem? "active": ""}`} href="#" onClick={()=>{props.projectTasks(props.projectItem)}}>{props.projectItem}</a>
 }
 export default Sidebar;
