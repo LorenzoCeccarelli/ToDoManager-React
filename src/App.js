@@ -27,17 +27,26 @@ class App extends React.Component {
   }
 
   deleteTask=(task)=> {
-    API.deleteTask(task).then((ts)=> this.setState({tasks: ts}));
+    API.deleteTask(task).then((ts)=> this.setState({tasks: ts.tasks, projectList: ts.projects}));
   }
-
+  openTaskForm = ()=>{
+    this.setState({mode: 'add'});
+  } 
+  handleCloseModal = ()=>{
+    this.setState({mode : "view", editedTask:null});
+  }
+  addOrEditTask = (task)=>{
+    if (this.state=="edit")
+      API.modifyTask(task).then((ts)=>this.setState({tasks : ts}));
+    else if (this.state=="add")
+      API.addTask(task).then((ts)=>this.setState({tasks: ts}));
+  }
   render() {
-    console.log(this.state.tasks);
-    console.log(this.state.projectList);
       return <div className="App">
           <Navbar/>
           <MainContent tasks={this.state.tasks} filter={this.state.filter} projectList={this.state.projectList} filterTasks={this.filterTasks}
-           projectTasks={this.projectTasks} deleteTask={this.deleteTask}/>
-          <OptionalModal mode={this.state.mode} />
+           projectTasks={this.projectTasks} deleteTask={this.deleteTask} openTaskForm={this.openTaskForm} requireEditTask={this.requireEditTask}/>
+          <OptionalModal mode={this.state.mode} editedTask={this.state.editedTask} handleCloseModal={this.handleCloseModal} addOrEditTask={this.addOrEditTask}/>
       </div>
 
   }

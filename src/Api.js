@@ -9,6 +9,10 @@ import Task from "./task.js";
     new Task(4,"asdrubale", 0, 1, "Casa", moment("2020-05-14 23:09"),1),
   ];
 
+  let fakeProjects=[
+    "Rifornimento", "Casa","Università"
+  ];
+
 async function getFilterTasks(filter){
     switch (filter){
         case "All":
@@ -32,9 +36,6 @@ async function getFilterTasks(filter){
 }
 
 async function getProjectNames(){
-    const fakeProjects=[
-        "Rifornimento", "Casa","Università"
-      ];
       return fakeProjects; 
 }
 
@@ -44,7 +45,8 @@ async function getProjectTasks(project){
 
 async function deleteTask(task){
     fakeTasks=fakeTasks.filter((t)=>t.id!=task.id);
-    return fakeTasks;
+    //CON IL DATABASE RITORNA ANCHE I PROGETTI CORRETTI
+    return {tasks: fakeTasks, projects: fakeProjects};
 }
 const API= {getFilterTasks, getProjectNames, getProjectTasks, deleteTask};
 export default API;

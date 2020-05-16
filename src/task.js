@@ -31,7 +31,7 @@ class Task{
   static from(json) {
     return Object.assign(new Task(), json);
   }
-  
+
 }
 
 export default Task;

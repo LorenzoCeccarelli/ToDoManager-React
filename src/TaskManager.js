@@ -4,10 +4,10 @@ const iconVisibility=<svg className="bi bi-person-square" width="1.2em" height="
                             <path fillRule="evenodd" d="M14 1H2a1 1 0 00-1 1v12a1 1 0 001 1h12a1 1 0 001-1V2a1 1 0 00-1-1zM2 0a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2H2z" 
                             clipRule="evenodd"/><path fillRule="evenodd" d="M2 15v-1c0-1 1-4 6-4s6 3 6 4v1H2zm6-6a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd"/></svg>
 
-const iconEdit=<button type="button" className="btn"><svg className="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+const iconEdit=<svg className="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fillRule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clipRule="evenodd"/>
                 <path fillRule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 00.5.5H4v.5a.5.5 0 00.5.5H5v.5a.5.5 0 00.5.5H6v-1.5a.5.5 0 00-.5-.5H5v-.5a.5.5 0 00-.5-.5H3z" clipRule="evenodd"/>
-                </svg></button>
+                </svg>
 
 const iconDelete=<svg className="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
@@ -15,8 +15,8 @@ const iconDelete=<svg className="bi bi-trash" width="1em" height="1em" viewBox="
                 </svg>
 function TaskManager(props){
     return  <>
-            <TaskTable tasks={props.tasks} filter={props.filter} deleteTask={props.deleteTask}/>
-            
+            <TaskTable tasks={props.tasks} filter={props.filter} deleteTask={props.deleteTask} requireEditTask={props.requireEditTask}/>
+            <NewTaskButton openTaskForm={props.openTaskForm}/>
             </>
 }
 class TaskTable extends React.Component{
@@ -31,6 +31,7 @@ class TaskTable extends React.Component{
             this.props.tasks.map((e) => <TaskItem key={e.id}
                                                   task={e}
                                                   deleteTask={this.props.deleteTask}
+                                                  requireEditTask={this.props.requireEditTask}
                                                  />)
         }
         </tbody>
@@ -43,7 +44,7 @@ class TaskItem extends React.Component{
 
     render(){
         return <tr className="taskRow" id={`task${this.props.task.id}`}>
-                <TaskItemInfo task={this.props.task} /><TaskItemControl task={this.props.task} deleteTask={this.props.deleteTask}/>
+                <TaskItemInfo task={this.props.task} /><TaskItemControl task={this.props.task} deleteTask={this.props.deleteTask} requireEditTask={this.props.requireEditTask}/>
                </tr>
     }
     
@@ -90,11 +91,17 @@ function TaskItemInfo(props){
     </>;
 }
 function TaskItemControl(props){
-    return  <td>{iconEdit}
+    return  <td><button type="button" className="btn" onClick={()=>{props.requireEditTask(props.task)}}>
+                    {iconEdit}
+                </button>
                 <button type="button" className="btn" onClick={()=>{props.deleteTask(props.task)}}>
-                {iconDelete}
+                    {iconDelete}
                 </button>
             </td>;
 }
+function NewTaskButton(props){
+    return <button id="newTaskButton" type="button" className="btn btn-lg btn-success fixed-right-bottom" onClick={()=>{props.openTaskForm()}}>&#43;</button>;
+}
+
 
 export default TaskManager;

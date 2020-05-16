@@ -7,7 +7,8 @@ function MainContent(props){
                 <div className="row vheight-100">
                     <Sidebar  projectList={props.projectList} filterTasks={props.filterTasks} filter={props.filter} projectTasks={props.projectTasks} />
                     <main className="col-sm-8 col-12 below-nav grid" id="MainContent">
-                    <TaskManager tasks={props.tasks} filter={props.filter} deleteTask={props.deleteTask}/>
+                    <TaskManager tasks={props.tasks} filter={props.filter} deleteTask={props.deleteTask} openTaskForm={props.openTaskForm} 
+                    requireEditTask={props.requireEditTask}/>
                     </main>
                 </div>
             </div>
