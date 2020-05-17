@@ -35,33 +35,41 @@ class OptionalModal extends React.Component {
 class OptionalTaskForm extends React.Component{
     constructor (props){
         super(props);
-        let d=null;
+        /*let deadline=null;
         if (this.props.editedTask!==null)
-            d=this.props.editedTask.deadline;
-        this.state = {task : this.props.editedTask, datePicker : d===null ? false : true};
+            deadline=this.props.editedTask.deadline;*/
+        this.state = {task : this.props.editedTask/*, datePicker : deadline===null ? false : true*/};
     }
     validateForm = (event) => {
         event.preventDefault();
     }
     doInsertTask=()=>{
-        console.log(this.form.inputDescription)
         if (this.form.checkValidity()) {
-           this.props.addOrEditTask()
+           this.props.addOrEditTask(this.state.task)
         } else {
             this.form.reportValidity();
         }
     }
-    updateDescription = ( value) => {
-        description = this.state.task.description;
-        this.setState({task: value});
+    updateField = (field, value) => {
+        let newTask;
+        if (this.props.mode==="edit")
+            newTask=this.state.task;
+        if (this.props.mode==="add")
+            if (this.state.task===null)
+                newTask={project : null, deadline : null};
+            else newTask=this.state.task;
+        newTask[`${field}`]=value;
+        console.log(value);
+        console.log(field);
+        this.setState({task: newTask});
     }
     render(){
     return  <form id="formNewTask" autoComplete="off" ref={form => this.form = form} onSubmit={this.validateForm}>
-                <OptionalTaskFormDescription  description={this.state.task === null ? null : this.state.task.description}/>
-                <OptionalTaskFormPriority priority={this.state.task === null ? null : this.state.task.important}/>
-                <OptionalTaskFormVisibility visibility={this.state.task === null ? null : this.state.task.visibility}/>
-                <OptionalTaskFormProjectName project={this.state.task === null ? null : this.state.task.project}/>
-                <OptionalTaskFormDeadline  deadline={this.state.task === null ? null : this.state.task.deadline}/>
+                <OptionalTaskFormDescription  updateField={this.updateField} description={this.state.task === null ? null : this.state.task.description}/>
+                <OptionalTaskFormPriority updateField={this.updateField} priority={this.state.task === null ? null : this.state.task.important}/>
+                <OptionalTaskFormVisibility updateField={this.updateField} visibility={this.state.task === null ? null : this.state.task.visibility}/>
+                <OptionalTaskFormProjectName updateField={this.updateField} project={this.state.task === null ? null : this.state.task.project}/>
+                <OptionalTaskFormDeadline  updateField={this.updateField} deadline={this.state.task === null ? null : this.state.task.deadline}/>
                 <OptionalControlTaskForm mode={this.props.mode} handleCloseButton={this.props.handleCloseButton} handleSubmitButton={this.doInsertTask}/>
             </form>;
     }
@@ -81,7 +89,7 @@ function OptionalTaskFormDescription(props){
     return <div className="form-group row">
             <label htmlFor="inputDescription" className="col-sm-2 col-form-label">Description:</label>
                 <div className="col-sm-10">
-                    <input type="Text" className="form-control" id="inputDescription" required={true} placeholder="This field is mandatory" defaultValue={props.description} />
+                    <input type="Text" className="form-control" name="description" id="inputDescription" required={true} placeholder="This field is mandatory" value={props.description} onChange={(ev)=>{props.updateField(ev.target.name,ev.target.value)}}/>
                 </div>
             </div>
 }
@@ -92,13 +100,13 @@ function OptionalTaskFormPriority(props){
                     <legend className="col-form-label col-sm-2 pt-0">Priority:</legend>
                     <div className="col-sm-10">
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="gridRadios" id="UrgentRadios" required={true} defaultChecked={props.priority===1 ? true : null} />
+                            <input className="form-check-input" type="radio" name="important" id="UrgentRadios" required={true} checked={props.priority===1 ? true : null} onClick={(ev)=>{props.updateField(ev.target.name,ev.target.value==="on" ? 1 : 0)}}/>
                                 <label className="form-check-label" htmlFor="UrgentRadios">
                                     Urgent
                                 </label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="gridRadios" id="NotUrgentRadios" defaultChecked={props.priority===0 ? true : null} />
+                            <input className="form-check-input" type="radio" name="important" id="NotUrgentRadios" checked={props.priority===0 ? true : null} onClick={(ev)=>{props.updateField(ev.target.name,ev.target.value==="on" ? 0 : 1)}}/>
                                 <label className="form-check-label" htmlFor="NotUrgentRadios" >
                                     Not Urgent
                                 </label>
@@ -113,13 +121,13 @@ function OptionalTaskFormVisibility(props){
                     <legend className="col-form-label col-sm-2 pt-0">Visibility:</legend>
                     <div className="col-sm-10">
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="gridRadios1" id="PrivateRadios" required={true} defaultChecked={props.visibility===0 ? true : null} />
+                            <input className="form-check-input" type="radio" name="visibility" id="PrivateRadios" required={true} checked={props.visibility===0 ? true : null} onClick={(ev)=>{props.updateField(ev.target.name,ev.target.value==="on" ? 0 : 1)}}/> 
                                 <label className="form-check-label" htmlFor="PrivateRadios">
                                 Private
                                 </label>
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="gridRadios1" id="SharedRadios" defaultChecked={props.visibility===1 ? true : null}/>
+                            <input className="form-check-input" type="radio" name="visibility" id="SharedRadios" checked={props.visibility===1 ? true : null} onClick={(ev)=>{props.updateField(ev.target.name,ev.target.value==="on" ? 1 : 0)}}/>
                                 <label className="form-check-label" htmlFor="SharedRadios">
                                 Shared
                                 </label>
@@ -132,17 +140,23 @@ function OptionalTaskFormProjectName(props){
     return <div className="form-group row">
         <label htmlFor="inputProjectName" className="col-sm-2 col-form-label">Project Name:</label>
         <div className="col-sm-10">
-            <input type="Text" className="form-control" id="inputProjectName" placeholder="This field is optional" defaultValue={props.project} />
+            <input type="Text" className="form-control" name="project" placeholder="This field is optional" value={props.project} onChange={(ev)=>{props.updateField(ev.target.name,ev.target.value)}}/>
         </div>
         </div>
 }
 class OptionalTaskFormDeadline extends React.Component{
     constructor(props){
         super(props);
-        this.state={datePicker : this.props.deadline==null ? false : true}
+        this.state={datePicker : this.props.deadline==null ? false : true, deadlineDate: this.props.deadline===null ? moment().format("YYYY-MM-DD") : this.props.deadline.format("YYYY-MM-DD") , deadlineHour: this.props.deadline===null ? moment().format("HH:mm") : this.props.deadline.format("HH:mm")}
     }
     toggleDatePicker=()=>{
         this.setState({datePicker : !this.state.datePicker});
+    }
+    setDeadlineHour=(hour)=>{
+        this.setState({deadlineHour : hour});
+    }
+    setDeadlineDate= (date)=>{
+        this.setState({deadlineDate : date})
     }
     render(){
     return <fieldset className="form-group">
@@ -150,16 +164,18 @@ class OptionalTaskFormDeadline extends React.Component{
                     <legend className="col-form-label col-sm-2 pt-0">Deadline:</legend>
                     <div className="col-sm-10">
                         <div className="form-check" >
-                            <input className="form-check-input" type="radio" name="gridRadios2" id="yesDeadline" required={true} defaultChecked={this.props.deadline===null ? null : true} onClick={()=>{this.toggleDatePicker()}}/>
+                            <input className="form-check-input" type="radio" name="deadline" id="yesDeadline" required={true} checked={this.props.deadline===null ? null : true} onChange={(ev)=>{this.props.updateField(ev.target.name, ev.target.value==="on" ? moment(this.state.deadlineDate+" "+this.state.deadlineHour) : null);
+                                                                                                                                                                                                         this.toggleDatePicker()}}/>
                             <label className="form-check-label" htmlFor="yesDeadline" id="labelYesDeadline">
                             Yes
                             </label>
                             {(this.state.datePicker===true) &&
-                            <DatePicker deadline={this.props.deadline}/>
+                            <DatePicker deadlineHour={this.state.deadlineHour} deadlineDate={this.state.deadlineDate} setDeadlineHour={this.setDeadlineHour} setDeadlineDate={this.setDeadlineDate}/>
                             }
                         </div>
                         <div className="form-check">
-                            <input className="form-check-input" type="radio" name="gridRadios2" id="noDeadline" defaultChecked={this.props.deadline ===null ? true : null} onClick={()=>{this.toggleDatePicker()}}/>
+                            <input className="form-check-input" type="radio" name="deadline" id="noDeadline" checked={this.props.deadline ===null ? true : null} onChange={(ev)=>{this.toggleDatePicker(); 
+                                                                                                                                                                                        this.props.updateField(ev.target.name, ev.target.value==="on" ? null : this.state.deadline)}}/>
                                 <label className="form-check-label" htmlFor="noDeadline" >
                                 No
                                 </label>
@@ -171,8 +187,8 @@ class OptionalTaskFormDeadline extends React.Component{
 }
 function DatePicker(props){
     return  <>
-            <input type="date"  className="form-control input-lg" required={true} min={moment().format("YYYY-MM-DD")} value={props.deadline===null ? moment().format("YYYY-MM-DD") : props.deadline.format("YYYY-MM-DD")} />
-            <input type="time" className="form-control input-lg" required={true} value={props.deadline === null ? moment().format("HH:mm") : props.deadline.format("HH:mm")} />
+            <input type="date"  className="form-control input-lg" required={true} min={moment().format("YYYY-MM-DD")} value={props.deadlineDate} onChange={(ev)=>props.setDeadlineDate(ev.target.value)} />
+            <input type="time" className="form-control input-lg" required={true} value={props.deadlineHour} onChange={(ev)=> props.setDeadlineHour(ev.target.value)}/>
             </>
 }
 export default OptionalModal;

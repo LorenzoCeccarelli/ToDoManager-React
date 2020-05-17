@@ -36,6 +36,7 @@ class App extends React.Component {
     this.setState({mode : "view", editedTask:null});
   }
   addOrEditTask = (task)=>{
+    console.log(task)
     if (this.state=="edit")
       API.modifyTask(task).then((ts)=>this.setState({tasks : ts}));
     else if (this.state=="add")

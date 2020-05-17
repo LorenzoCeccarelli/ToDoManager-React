@@ -48,5 +48,11 @@ async function deleteTask(task){
     //CON IL DATABASE RITORNA ANCHE I PROGETTI CORRETTI
     return {tasks: fakeTasks, projects: fakeProjects};
 }
+async function modifyTask(task){
+    return null;
+}
+async function addTask(task){
+    return null;
+}
 const API= {getFilterTasks, getProjectNames, getProjectTasks, deleteTask};
 export default API;
