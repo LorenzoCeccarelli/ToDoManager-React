@@ -14,15 +14,16 @@ const iconDelete=<svg className="bi bi-trash" width="1em" height="1em" viewBox="
                 <path fillRule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clipRule="evenodd"/>
                 </svg>
 function TaskManager(props){
+    if (props.filter!=null)
     return  <>
-            <TaskTable tasks={props.tasks} filter={props.filter} deleteTask={props.deleteTask} requireEditTask={props.requireEditTask}/>
-            <NewTaskButton openTaskForm={props.openTaskForm}/>
+            <TaskTable tasks={props.tasks} filter={props.filter} deleteTask={props.deleteTask} requireEditTask={props.requireEditTask} setCompleted={props.setCompleted}/>
             </>
+    else return null;
 }
 class TaskTable extends React.Component{
     
     render(){
-        console.log(this.props);
+
         return <>
         <table className='table ' style={{marginBottom: 0}}>
         <thead className="headTable">
@@ -32,7 +33,9 @@ class TaskTable extends React.Component{
                                                   task={e}
                                                   deleteTask={this.props.deleteTask}
                                                   requireEditTask={this.props.requireEditTask}
+                                                  setCompleted={this.props.setCompleted}
                                                  />)
+
         }
         </tbody>
     </table>
@@ -44,7 +47,7 @@ class TaskItem extends React.Component{
 
     render(){
         return <tr className="taskRow" id={`task${this.props.task.id}`}>
-                <TaskItemInfo task={this.props.task} /><TaskItemControl task={this.props.task} deleteTask={this.props.deleteTask} requireEditTask={this.props.requireEditTask}/>
+                <TaskItemInfo task={this.props.task} setCompleted={this.props.setCompleted}/><TaskItemControl task={this.props.task} deleteTask={this.props.deleteTask} requireEditTask={this.props.requireEditTask}/>
                </tr>
     }
     
@@ -58,7 +61,7 @@ function TaskItemInfo(props){
     if (priority === 1)
         classType="custom-control-input important"
     else classType="custom-control-input "  
-    if (visibility === 1)
+    if (visibility === 0)
         visibility=iconVisibility;
     else visibility =null;
     let check;
@@ -67,7 +70,7 @@ function TaskItemInfo(props){
     else check=false;
     let scaduto=null;
     if (deadline!=null){
-        deadline=deadline.format("YYYY-MM-DD HH:mm");
+        //deadline=moment(deadline.format("YYYY-MM-DD HH:mm");
         if (moment(deadline).isBefore(moment()))
             scaduto="scaduto";
     }
@@ -76,7 +79,8 @@ function TaskItemInfo(props){
         <td>
             <div className="d-flex w-100 justify-content-between">
                 <div className="custom-control custom-checkbox">
-                    <input className={classType} type="checkbox" id={props.task.id} defaultChecked={check}/>
+                    <input className={classType} type="checkbox" name="completed" id={props.task.id} defaultChecked={props.task.completed===1 ? true : false} onClick={(ev)=>{console.log(ev.target.value);
+                        props.setCompleted(ev.target.id, props.task.completed===1 ? 0 : 1)}}/>
                     <label htmlFor={props.task.id} className="custom-control-label">
                         {props.task.description}
                     </label>
@@ -99,9 +103,5 @@ function TaskItemControl(props){
                 </button>
             </td>;
 }
-function NewTaskButton(props){
-    return <button id="newTaskButton" type="button" className="btn btn-lg btn-success fixed-right-bottom" onClick={()=>{props.openTaskForm()}}>&#43;</button>;
-}
-
 
 export default TaskManager;

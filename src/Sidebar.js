@@ -44,6 +44,7 @@ function ProjectTitle(){
     return <a className="nav-link nav-link-group" >Projects</a>
 }
 function ProjectItem(props){
+    console.log(props.projectItem);
     return <a name={props.projectItem} className={`nav-link ml-3 my-1 nav-link-item ${props.filter===props.projectItem? "active": ""}`} href="#" onClick={()=>{props.projectTasks(props.projectItem)}}>{props.projectItem}</a>
 }
 export default Sidebar;

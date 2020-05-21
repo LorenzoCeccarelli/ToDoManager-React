@@ -56,11 +56,9 @@ class OptionalTaskForm extends React.Component{
             newTask=this.state.task;
         if (this.props.mode==="add")
             if (this.state.task===null)
-                newTask={project : null, deadline : null};
+                newTask={project : '', deadline : null};
             else newTask=this.state.task;
         newTask[`${field}`]=value;
-        console.log(value);
-        console.log(field);
         this.setState({task: newTask});
     }
     render(){
@@ -147,16 +145,18 @@ function OptionalTaskFormProjectName(props){
 class OptionalTaskFormDeadline extends React.Component{
     constructor(props){
         super(props);
-        this.state={datePicker : this.props.deadline==null ? false : true, deadlineDate: this.props.deadline===null ? moment().format("YYYY-MM-DD") : this.props.deadline.format("YYYY-MM-DD") , deadlineHour: this.props.deadline===null ? moment().format("HH:mm") : this.props.deadline.format("HH:mm")}
+        this.state={datePicker : this.props.deadline==null ? false : true, deadlineDate: this.props.deadline===null ? moment().format("YYYY-MM-DD") : moment(this.props.deadline).format("YYYY-MM-DD") , deadlineHour: this.props.deadline===null ? moment().format("HH:mm") : moment(this.props.deadline).format("HH:mm")}
     }
     toggleDatePicker=()=>{
         this.setState({datePicker : !this.state.datePicker});
     }
     setDeadlineHour=(hour)=>{
         this.setState({deadlineHour : hour});
+        this.props.updateField("deadline",this.state.deadlineDate+" "+hour);
     }
     setDeadlineDate= (date)=>{
         this.setState({deadlineDate : date})
+        this.props.updateField("deadline",date+" "+this.state.deadlineHour);
     }
     render(){
     return <fieldset className="form-group">
@@ -175,7 +175,7 @@ class OptionalTaskFormDeadline extends React.Component{
                         </div>
                         <div className="form-check">
                             <input className="form-check-input" type="radio" name="deadline" id="noDeadline" checked={this.props.deadline ===null ? true : null} onChange={(ev)=>{this.toggleDatePicker(); 
-                                                                                                                                                                                        this.props.updateField(ev.target.name, ev.target.value==="on" ? null : this.state.deadline)}}/>
+                                                                                                                                                                                        this.props.updateField(ev.target.name, ev.target.value==="on" ? null : this.state.deadlineDate+" "+this.state.deadlineHour)}}/>
                                 <label className="form-check-label" htmlFor="noDeadline" >
                                 No
                                 </label>

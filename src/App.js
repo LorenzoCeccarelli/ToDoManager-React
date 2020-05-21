@@ -11,7 +11,9 @@ class App extends React.Component {
   }
   componentDidMount() {
     // fake loading the tasks from the API server
-    API.getProjectNames().then((pn) => this.setState({ projectList : pn}));
+    API.getAllProjects().then((pn) => {console.log(pn);
+                                      this.setState({ projectList : pn})});
+   
   }
 
   filterTasks= (filtro)=>{
@@ -27,7 +29,13 @@ class App extends React.Component {
   }
 
   deleteTask=(task)=> {
-    API.deleteTask(task).then((ts)=> this.setState({tasks: ts.tasks, projectList: ts.projects}));
+    API.deleteTask(task).then(()=> {
+      let t=this.state.tasks;
+      t=t.filter(e=>e.id!=task.id);
+      this.setState({tasks: t})
+      });
+      API.getAllProjects().then((pn) => {console.log(pn);
+        this.setState({ projectList : pn})});
   }
   openTaskForm = ()=>{
     this.setState({mode: 'add'});
@@ -37,16 +45,31 @@ class App extends React.Component {
   }
   addOrEditTask = (task)=>{
     console.log(task)
-    if (this.state=="edit")
-      API.modifyTask(task).then((ts)=>this.setState({tasks : ts}));
-    else if (this.state=="add")
-      API.addTask(task).then((ts)=>this.setState({tasks: ts}));
+    if (this.state.mode=="edit")
+      API.updateTask(task).then((ts)=>this.setState({tasks:null, filter: null, mode:"view"}));
+    else if (this.state.mode=="add"){
+      task.completed=0;
+      API.addTask(task).then(()=>this.setState({tasks:null, filter: null, mode: "view"}));
+    }
+    API.getAllProjects().then((pn) => {console.log(pn);
+      this.setState({ projectList : pn})});
+  }
+  setCompleted = (taskId,value)=>{
+    API.setTaskCompleted(taskId,value).then(()=> {
+      let t=this.state.tasks;
+      for (let i=0;i<t.length;i++)
+        if (t[i].id===taskId)
+          t[i].completed=value;
+        console.log(t);
+      this.setState({tasks : t});
+    })
   }
   render() {
       return <div className="App">
           <Navbar/>
           <MainContent tasks={this.state.tasks} filter={this.state.filter} projectList={this.state.projectList} filterTasks={this.filterTasks}
-           projectTasks={this.projectTasks} deleteTask={this.deleteTask} openTaskForm={this.openTaskForm} requireEditTask={this.requireEditTask}/>
+           projectTasks={this.projectTasks} deleteTask={this.deleteTask} openTaskForm={this.openTaskForm} requireEditTask={this.requireEditTask}
+           setCompleted={this.setCompleted}/>
           <OptionalModal mode={this.state.mode} editedTask={this.state.editedTask} handleCloseModal={this.handleCloseModal} addOrEditTask={this.addOrEditTask}/>
       </div>
 
