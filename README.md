@@ -8,7 +8,7 @@ Installare node https://nodejs.org/en/download/package-manager/
   ```
   ## Server
   ```
-  cd server
+  cd Backend
   npm install
   node server.js
   ```
