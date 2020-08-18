@@ -14,7 +14,7 @@ Installare node https://nodejs.org/en/download/package-manager/
   ```
   ## Client
   ```
-  cd client 
+  cd src
   npm install
   npm start
   ```
