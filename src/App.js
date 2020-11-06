@@ -66,6 +66,7 @@ class App extends React.Component {
   }
   render() {
       return <div className="App">
+        <h1 data-testid="prova">Prova</h1>
           <Navbar/>
           <MainContent tasks={this.state.tasks} filter={this.state.filter} projectList={this.state.projectList} filterTasks={this.filterTasks}
            projectTasks={this.projectTasks} deleteTask={this.deleteTask} openTaskForm={this.openTaskForm} requireEditTask={this.requireEditTask}
