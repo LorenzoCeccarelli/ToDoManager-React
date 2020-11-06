@@ -15,5 +15,5 @@ addons:
     token: "SONAR_TOKEN"
 script:
   # other script steps might be done before running the actual analysis
-  - sonar-scanner
+  - sonar-scanner -Dsonar.login=$SONAR_TOKEN
   - npm run test
