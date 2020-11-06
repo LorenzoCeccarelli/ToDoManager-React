@@ -7,5 +7,13 @@ node_js:
 install:
   - npm install
 
+
+dist: xenial
+addons:
+  sonarcloud:
+    organization: "lorenzo-ceccarelli" # the key of the org you chose at step #3
+    token: "SONAR_TOKEN"
 script:
+  # other script steps might be done before running the actual analysis
+  - sonar-scanner
   - npm run test
